@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Management Portal</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="login-page" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-briefcase"></i>
+                <h1>LeaveTracker</h1>
+                <p>Please sign in to access your account</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <i class="fas fa-user-tag"></i>
+                    <select id="role" required>
+                        <option value="">Select your role</option>
+                        <option value="employee">Employee</option>
+                        <!-- <option value="manager">Manager</option> -->
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="login-btn">Sign In</button>
+                <div class="demo-credentials">
+                    <p><strong>Demo Credentials:</strong></p>
+                    <p>Employee: employee@company.com / emp123</p>
+                    <!-- <p>Manager: manager@company.com / mgr123</p> -->
+                    <p>Admin: admin@company.com / admin123</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-container" class="app-container">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-briefcase"></i>
+                    <span>LeaveTracker</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                    <a href="#apply" class="nav-link" data-section="apply" id="apply-nav">
+                        <i class="fas fa-plus-circle"></i> Apply Leave
+                    </a>
+                    <a href="#history" class="nav-link" data-section="history">
+                        <i class="fas fa-history"></i> Leave History
+                    </a>
+                    <a href="#holidays" class="nav-link" data-section="holidays" id="holidays-nav">
+                        <i class="fas fa-calendar-alt"></i> Holidays
+                    </a>
+                    <a href="#admin" class="nav-link" data-section="admin" id="admin-nav">
+                        <i class="fas fa-cog"></i> Admin Panel
+                    </a>
+                </div>
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="current-user">User</span>
+                    <span id="current-role-badge" class="role-badge"></span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            
+            <section id="dashboard" class="content-section active">
+                <h1>Leave Balance Dashboard</h1>
+                <br>
+                <div class="dashboard-grid">
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <i class="fas fa-calendar-day"></i>
+                            <h3>Sick Leave</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-info">
+                                <span class="balance-number" id="sick-balance">8</span>
+                                <span class="balance-total" id="sick-total">/ 12 days</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="sick-progress" style="width: 67%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <i class="fas fa-coffee"></i>
+                            <h3>Casual Leave</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-info">
+                                <span class="balance-number" id="casual-balance">5</span>
+                                <span class="balance-total" id="casual-total">/ 15 days</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="casual-progress" style="width: 33%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <i class="fas fa-plane"></i>
+                            <h3>Vacation</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-info">
+                                <span class="balance-number" id="vacation-balance">18</span>
+                                <span class="balance-total" id="vacation-total">/ 20 days</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="vacation-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>Academic Leave</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-info">
+                                <span class="balance-number" id="academic-balance">3</span>
+                                <span class="balance-total" id="academic-total">/ 5 days</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="academic-progress" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <i class="fas fa-home"></i>
+                            <h3>Work From Home</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-info">
+                                <span class="balance-number" id="wfh-balance">0</span>
+                                <span class="balance-total" id="wfh-total">/ 12 days</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="wfh-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <i class="fas fa-clock"></i>
+                            <h3>Comp Off</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-info">
+                                <span class="balance-number" id="compoff-balance">0</span>
+                                <span class="balance-total" id="compoff-total">/ 5 days</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="compoff-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <i class="fas fa-minus-circle"></i>
+                            <h3>Loss of Pay (LOP)</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-info">
+                                <span class="balance-number" id="lop-balance">0</span>
+                                <span class="balance-total" id="lop-total">/ 10 days</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="lop-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h2>Recent Leave Requests</h2>
+                    <div class="activity-list" id="recent-requests">
+                        </div>
+                </div>
+            </section>
+
+            <section id="apply" class="content-section">
+                <h1>Apply for Leave</h1>
+                <br>
+                <form id="leave-form" class="leave-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="leave-type">Leave Type</label>
+                            <select id="leave-type" required>
+                                <option value="">Select Leave Type</option>
+                                <option value="sick">Sick Leave</option>
+                                <option value="casual">Casual Leave</option>
+                                <option value="vacation">Vacation</option>
+                                <option value="academic">Academic Leave</option>
+                                <option value="wfh">Work From Home</option>
+                                <option value="comp-off">Comp Off</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="start-date">Start Date</label>
+                            <input type="date" id="start-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="end-date">End Date</label>
+                            <input type="date" id="end-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duration">Duration</label>
+                            <input type="text" id="duration" readonly placeholder="Auto-calculated">
+                        </div>
+
+                        <div class="form-group full-width" id="academic-doc-group" style="display:none;">
+                            <label for="academic-doc">Supporting Document (Academic Leave)</label>
+                            <input type="file" id="academic-doc" accept=".pdf,.doc,.docx">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="reason">Reason for Leave</label>
+                            <textarea id="reason" rows="4" placeholder="Please provide a detailed reason for your leave request..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergency-contact">Emergency Contact</label>
+                            <input type="tel" id="emergency-contact" placeholder="Phone number">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="manager-email">Manager Email</label>
+                            <input type="email" id="manager-email" placeholder="manager@company.com">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="save-draft">Save as Draft</button>
+                        <button type="submit" class="btn-primary">Submit Request</button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="history" class="content-section">
+                <h1>Leave History</h1>
+                <br>
+                <div class="filters">
+                    <div class="filter-group">
+                        <select id="status-filter">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="lop">Loss of Pay</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="type-filter">
+                            <option value="">All Types</option>
+                            <option value="sick">Sick Leave</option>
+                            <option value="casual">Casual Leave</option>
+                            <option value="vacation">Vacation</option>
+                            <option value="academic">Academic Leave</option>
+                            <option value="wfh">Work From Home</option>
+                            <option value="comp-off">Comp Off</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <input type="month" id="month-filter">
+                    </div>
+                </div>
+
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Leave Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="holidays" class="content-section">
+                <h1>Holiday Calendar & List</h1>
+                <br>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                        <h3 id="current-month-year">January 2024</h3>
+                        <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid">
+                        </div>
+                </div>
+
+                <div class="holiday-list">
+                    <h3>Indian National Holidays 2024</h3>
+                    <div id="holiday-list-container">
+                        </div>
+                </div>
+            </section>
+
+            <section id="admin" class="content-section">
+                <h1>Admin Panel</h1>
+                
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="pending-requests">Pending Requests</button>
+                    <button class="tab-btn" data-tab="holiday-management">Holiday Management</button>
+                    <button class="tab-btn" data-tab="quota-management">Quota Management</button>
+                </div>
+
+                <div id="pending-requests" class="tab-content active">
+                    <h2>Pending Leave Requests</h2>
+                    <div class="pending-requests-container">
+                        <div class="requests-grid" id="pending-requests-grid">
+                            </div>
+                    </div>
+                </div>
+
+                <div id="holiday-management" class="tab-content">
+                    <h2>Holiday Management</h2>
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <button id="admin-prev-month"><i class="fas fa-chevron-left"></i></button>
+                            <h3 id="admin-current-month-year">January 2024</h3>
+                            <button id="admin-next-month"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-grid" id="admin-calendar-grid">
+                            </div>
+                    </div>
+                    <div class="holiday-form">
+                        <h3>Add Custom Holiday</h3>
+                        <form id="holiday-form">
+                            <input type="date" id="holiday-date" required>
+                            <input type="text" id="holiday-name" placeholder="Holiday Name" required>
+                            <button type="submit">Add Holiday</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="quota-management" class="tab-content">
+                    <h2>Leave Quota Management</h2>
+                    <div class="quota-container">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Role</th>
+                                    <th>Sick Leave</th>
+                                    <th>Casual Leave</th>
+                                    <th>Vacation</th>
+                                    <th>Academic</th>
+                                    <th>WFH</th>
+                                    <th>Comp Off</th>
+                                    <th>Max LOP</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="quota-tbody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                
+            </section>
+        </div>
+    </div>
+
+    <div id="request-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div id="notification-container"></div>
+
+    <script src="index.js"></script>
+</body>
+</html>
